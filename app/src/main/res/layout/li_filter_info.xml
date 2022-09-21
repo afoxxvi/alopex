@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="com.afoxxvi.alopex.filter.AlopexFilter" />
+
+        <variable
+            name="filter"
+            type="AlopexFilter" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="4dp"
+        android:background="@drawable/rect_4dp"
+        android:backgroundTint="?attr/colorBackgroundFloating"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/labelPackage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/textPackage"
+            android:text="Package"
+            android:textColor="?android:attr/textColorPrimary" />
+
+        <TextView
+            android:id="@+id/labelAction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/textAction"
+            android:layout_alignEnd="@id/labelPackage"
+            android:text="Action"
+            android:textColor="?android:attr/textColorPrimary" />
+
+        <TextView
+            android:id="@+id/labelBlacklist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/textBlacklist"
+            android:layout_alignEnd="@id/labelPackage"
+            android:text="Blacklist"
+            android:textColor="?android:attr/textColorPrimary" />
+
+        <TextView
+            android:id="@+id/textPackage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginVertical="2dp"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@id/labelPackage"
+            android:text="@{filter.packageName, default = package}" />
+
+        <TextView
+            android:id="@+id/textAction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textPackage"
+            android:layout_alignStart="@id/textPackage"
+            android:layout_alignParentEnd="true"
+            android:layout_marginVertical="2dp"
+            android:singleLine="false"
+            android:text="@{filter.actionText, default = action}" />
+
+        <TextView
+            android:id="@+id/textBlacklist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textAction"
+            android:layout_alignStart="@id/textPackage"
+            android:layout_alignParentEnd="true"
+            android:layout_marginVertical="2dp"
+            android:singleLine="false"
+            android:text="@{filter.blacklistText, default = blacklist}" />
+
+    </RelativeLayout>
+</layout>

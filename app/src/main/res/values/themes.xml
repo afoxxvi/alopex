@@ -1,0 +1,27 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Alopex" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/Purple500</item>
+        <item name="colorPrimaryDark">@color/Purple700</item>
+        <item name="colorPrimaryVariant">@color/Purple700</item>
+        <item name="colorOnPrimary">@color/White</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/Orange300</item>
+        <item name="colorSecondaryVariant">@color/Orange700</item>
+        <item name="colorOnSecondary">@color/White</item>
+        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">#FFF0F0F0</item>
+        <item name="colorAccent">@color/Pink500</item>
+        <item name="colorSurface">#FFF0F0F0</item>
+        <item name="colorBackgroundFloating">@color/Gray50</item>
+        <item name="colorOnBackground">@color/Black</item>
+        <item name="colorOnError">@color/White</item>
+        <item name="colorOnSurface">@color/Black</item>
+    </style>
+</resources>
