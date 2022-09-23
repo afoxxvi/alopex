@@ -1,8 +1,6 @@
-package com.afoxxvi.alopex.notify;
+package com.afoxxvi.alopex.component.notify;
 
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;

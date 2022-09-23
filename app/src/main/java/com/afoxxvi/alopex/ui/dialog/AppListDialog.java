@@ -1,4 +1,4 @@
-package com.afoxxvi.alopex.dialog;
+package com.afoxxvi.alopex.ui.dialog;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -11,7 +11,6 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.BaseObservable;

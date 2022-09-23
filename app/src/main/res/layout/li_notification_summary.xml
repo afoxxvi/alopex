@@ -4,7 +4,7 @@
 
     <data>
 
-        <import type="com.afoxxvi.alopex.notify.Notify" />
+        <import type="com.afoxxvi.alopex.component.notify.Notify" />
 
         <import type="androidx.core.content.ContextCompat" />
 
@@ -14,7 +14,7 @@
 
         <variable
             name="notify"
-            type="Notify" />
+            type="com.afoxxvi.alopex.component.notify.Notify" />
     </data>
 
     <LinearLayout

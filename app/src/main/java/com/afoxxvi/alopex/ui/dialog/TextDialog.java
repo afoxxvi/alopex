@@ -1,13 +1,10 @@
-package com.afoxxvi.alopex.dialog;
+package com.afoxxvi.alopex.ui.dialog;
 
 import android.content.Context;
 import android.text.SpannableStringBuilder;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
-import android.widget.Button;
-import android.widget.TextView;
 
-import com.afoxxvi.alopex.R;
 import com.afoxxvi.alopex.databinding.DialogSingleTextBinding;
 
 public abstract class TextDialog extends BaseDialog {

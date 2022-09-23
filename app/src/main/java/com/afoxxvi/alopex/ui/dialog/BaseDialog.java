@@ -1,4 +1,4 @@
-package com.afoxxvi.alopex.dialog;
+package com.afoxxvi.alopex.ui.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

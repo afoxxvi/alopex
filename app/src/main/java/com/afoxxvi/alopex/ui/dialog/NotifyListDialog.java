@@ -1,4 +1,4 @@
-package com.afoxxvi.alopex.dialog;
+package com.afoxxvi.alopex.ui.dialog;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -6,18 +6,17 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.afoxxvi.alopex.R;
+import com.afoxxvi.alopex.component.filter.AlopexFilterManager;
+import com.afoxxvi.alopex.component.notify.NotifyGroup;
+import com.afoxxvi.alopex.component.notify.NotifyManager;
 import com.afoxxvi.alopex.databinding.DialogNotifyListBinding;
 import com.afoxxvi.alopex.databinding.LiNotificationSummaryBinding;
-import com.afoxxvi.alopex.filter.AlopexFilterManager;
-import com.afoxxvi.alopex.notify.NotifyGroup;
-import com.afoxxvi.alopex.notify.NotifyManager;
 
 public class NotifyListDialog extends BaseDialog {
     private final NotifyGroup notifyGroup;

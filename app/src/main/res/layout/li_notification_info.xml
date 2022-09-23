@@ -5,11 +5,11 @@
 
         <import type="android.view.View" />
 
-        <import type="com.afoxxvi.alopex.notify.NotifyGroup" />
+        <import type="com.afoxxvi.alopex.component.notify.NotifyGroup" />
 
         <variable
             name="group"
-            type="NotifyGroup" />
+            type="com.afoxxvi.alopex.component.notify.NotifyGroup" />
     </data>
 
     <LinearLayout

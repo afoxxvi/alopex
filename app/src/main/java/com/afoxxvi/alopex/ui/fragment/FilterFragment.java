@@ -1,4 +1,4 @@
-package com.afoxxvi.alopex.fragment;
+package com.afoxxvi.alopex.ui.fragment;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -16,11 +16,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.afoxxvi.alopex.AlopexView;
 import com.afoxxvi.alopex.R;
+import com.afoxxvi.alopex.component.filter.AlopexFilter;
+import com.afoxxvi.alopex.component.filter.AlopexFilterManager;
 import com.afoxxvi.alopex.databinding.FragmentFilterBinding;
 import com.afoxxvi.alopex.databinding.LiFilterInfoBinding;
-import com.afoxxvi.alopex.dialog.FilterDialog;
-import com.afoxxvi.alopex.filter.AlopexFilter;
-import com.afoxxvi.alopex.filter.AlopexFilterManager;
+import com.afoxxvi.alopex.ui.dialog.FilterDialog;
 
 public class FilterFragment extends Fragment {
     private FragmentFilterBinding binding;

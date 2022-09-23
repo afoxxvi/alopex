@@ -19,13 +19,13 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.afoxxvi.alopex.component.filter.AlopexFilterManager;
+import com.afoxxvi.alopex.component.notify.NotifyManager;
 import com.afoxxvi.alopex.databinding.ActivityMainBinding;
-import com.afoxxvi.alopex.filter.AlopexFilterManager;
-import com.afoxxvi.alopex.fragment.FilterFragment;
-import com.afoxxvi.alopex.fragment.NotificationFragment;
 import com.afoxxvi.alopex.listener.RestartReceiver;
-import com.afoxxvi.alopex.notify.NotifyManager;
 import com.afoxxvi.alopex.service.AlopexNotificationListenerService;
+import com.afoxxvi.alopex.ui.fragment.FilterFragment;
+import com.afoxxvi.alopex.ui.fragment.NotificationFragment;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.concurrent.Executors;

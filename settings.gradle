@@ -14,5 +14,3 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Alopex"
 include ':app'
-include ':app:mylibrary'
-include ':liba'

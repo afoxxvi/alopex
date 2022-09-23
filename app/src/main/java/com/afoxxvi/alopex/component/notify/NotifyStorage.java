@@ -1,4 +1,4 @@
-package com.afoxxvi.alopex.notify;
+package com.afoxxvi.alopex.component.notify;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

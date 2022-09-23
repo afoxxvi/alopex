@@ -1,4 +1,4 @@
-package com.afoxxvi.alopex.fragment;
+package com.afoxxvi.alopex.ui.fragment;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,13 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.afoxxvi.alopex.AlopexView;
 import com.afoxxvi.alopex.R;
+import com.afoxxvi.alopex.component.notify.Notify;
+import com.afoxxvi.alopex.component.notify.NotifyGroup;
+import com.afoxxvi.alopex.component.notify.NotifyManager;
 import com.afoxxvi.alopex.databinding.FragmentNotificationBinding;
 import com.afoxxvi.alopex.databinding.LiNotificationInfoBinding;
-import com.afoxxvi.alopex.dialog.NotifyListDialog;
-import com.afoxxvi.alopex.filter.AlopexFilterManager;
-import com.afoxxvi.alopex.notify.Notify;
-import com.afoxxvi.alopex.notify.NotifyGroup;
-import com.afoxxvi.alopex.notify.NotifyManager;
+import com.afoxxvi.alopex.ui.dialog.NotifyListDialog;
 
 import java.time.LocalDateTime;
 

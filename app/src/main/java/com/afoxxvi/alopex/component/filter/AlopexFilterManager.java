@@ -1,20 +1,12 @@
-package com.afoxxvi.alopex.filter;
+package com.afoxxvi.alopex.component.filter;
 
 import static com.afoxxvi.alopex.AlopexView.TAG;
-import static com.afoxxvi.alopex.MainActivity.CHANNEL_ONE_ID;
 
-import android.app.Notification;
 import android.content.Context;
 import android.util.Log;
 
-import androidx.core.app.NotificationManagerCompat;
-
-import com.afoxxvi.alopex.BR;
-import com.afoxxvi.alopex.R;
-import com.afoxxvi.alopex.notify.Notify;
-import com.afoxxvi.alopex.service.AlopexNotificationListenerService;
+import com.afoxxvi.alopex.component.notify.Notify;
 import com.afoxxvi.alopex.util.FileUtils;
-import com.afoxxvi.alopex.util.Pair;
 import com.afoxxvi.alopex.util.Triplet;
 
 import org.json.JSONArray;

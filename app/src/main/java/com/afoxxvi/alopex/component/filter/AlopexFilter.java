@@ -1,4 +1,4 @@
-package com.afoxxvi.alopex.filter;
+package com.afoxxvi.alopex.component.filter;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;

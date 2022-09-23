@@ -1,4 +1,4 @@
-package com.afoxxvi.alopex.notify;
+package com.afoxxvi.alopex.component.notify;
 
 import android.os.Parcel;
 import android.os.Parcelable;

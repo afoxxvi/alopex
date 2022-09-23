@@ -16,8 +16,8 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.afoxxvi.alopex.AlopexView;
 import com.afoxxvi.alopex.R;
-import com.afoxxvi.alopex.filter.AlopexFilterManager;
-import com.afoxxvi.alopex.fragment.NotificationFragment;
+import com.afoxxvi.alopex.component.filter.AlopexFilterManager;
+import com.afoxxvi.alopex.ui.fragment.NotificationFragment;
 import com.afoxxvi.alopex.util.Pair;
 import com.afoxxvi.alopex.util.Triplet;
 

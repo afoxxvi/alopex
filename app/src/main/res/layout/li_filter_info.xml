@@ -3,11 +3,11 @@
 
     <data>
 
-        <import type="com.afoxxvi.alopex.filter.AlopexFilter" />
+        <import type="com.afoxxvi.alopex.component.filter.AlopexFilter" />
 
         <variable
             name="filter"
-            type="AlopexFilter" />
+            type="com.afoxxvi.alopex.component.filter.AlopexFilter" />
     </data>
 
     <RelativeLayout
