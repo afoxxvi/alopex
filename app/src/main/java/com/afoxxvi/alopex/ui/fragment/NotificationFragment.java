@@ -21,8 +21,7 @@ import com.afoxxvi.alopex.component.notify.NotifyManager;
 import com.afoxxvi.alopex.databinding.FragmentNotificationBinding;
 import com.afoxxvi.alopex.databinding.LiNotificationInfoBinding;
 import com.afoxxvi.alopex.ui.dialog.NotifyListDialog;
-
-import java.time.LocalDateTime;
+import com.afoxxvi.alopex.util.FoxTools;
 
 public class NotificationFragment extends Fragment {
     private FragmentNotificationBinding binding;
@@ -56,7 +55,7 @@ public class NotificationFragment extends Fragment {
         public void handleMessage(@NonNull Message msg) {
             if (msg.what == WHAT_NOTIFICATION_LISTENER_SERVICE) {
                 Bundle bd = msg.getData();
-                Notify notify = new Notify(bd.getString("title"), bd.getString("content"), LocalDateTime.now());
+                Notify notify = new Notify(bd.getString("title"), bd.getString("content"), FoxTools.getLocalDateTimeFromMills(bd.getLong("time", System.currentTimeMillis())));
                 int from = NotifyManager.getInstance().newNotify(getContext(), bd.getString("package"), notify);
                 RecyclerView.Adapter<?> adapter = binding.recyclerNotification.getAdapter();
                 if (adapter != null && from != -1) {

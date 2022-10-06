@@ -4,8 +4,8 @@ import static com.afoxxvi.alopex.AlopexView.TAG;
 import static com.afoxxvi.alopex.MainActivity.CHANNEL_ONE_ID;
 
 import android.app.Notification;
-import android.content.ComponentName;
-import android.content.pm.PackageManager;
+import android.content.Intent;
+import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.os.Message;
 import android.service.notification.NotificationListenerService;
@@ -26,14 +26,19 @@ import java.util.Map;
 
 public class AlopexNotificationListenerService extends NotificationListenerService {
     public static boolean active = false;
-    private static boolean rebinding = false;
     private static final Map<String, Pair<String, String>> LATEST_NOTIFICATION_MAP = new HashMap<>();
+    public static final String PROPERTY_KEY_LAST_NOTIFICATION_MILLS = "lastNotificationMills";
+    private static long lastNotificationMills = 0;
 
     public AlopexNotificationListenerService() {
     }
 
     @Override
-    public void onNotificationPosted(StatusBarNotification sbn) {
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return START_STICKY;
+    }
+
+    private void handleNotification(StatusBarNotification sbn) {
         Bundle bundle = sbn.getNotification().extras;
         String pkg = sbn.getPackageName();
         if (pkg.equals(getApplication().getPackageName())) {
@@ -54,17 +59,23 @@ public class AlopexNotificationListenerService extends NotificationListenerServi
             bd.putString("package", pkg);
             bd.putString("title", title);
             bd.putString("content", text);
+            bd.putLong("time", sbn.getPostTime());
             msg.setData(bd);
             msg.sendToTarget();
         }
         Triplet<Boolean, Boolean, Boolean> pair = AlopexFilterManager.getInstance().isFiltered(pkg, title, text, true);
         if (pair.a) {
+            Notification ntf = sbn.getNotification();
+            Icon icon = ntf.getSmallIcon();
+            Icon large = ntf.getLargeIcon();
             Notification notification = new Notification.Builder(this, CHANNEL_ONE_ID)
                     .setAutoCancel(true)
                     .setContentTitle(title)
                     .setContentText(text)
-                    .setSmallIcon(R.drawable.ic_launcher_foreground)
-                    .setTimeoutAfter(1000)
+                    .setContentIntent(ntf.contentIntent)
+                    .setSmallIcon(icon)
+                    .setLargeIcon(large)
+                    //.setTimeoutAfter(1000)
                     .build();
             NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
             managerCompat.notify(1, notification);
@@ -74,34 +85,42 @@ public class AlopexNotificationListenerService extends NotificationListenerServi
         }
     }
 
+    private void saveProperties() {
+        AlopexView.getProperties().edit().putLong(PROPERTY_KEY_LAST_NOTIFICATION_MILLS, lastNotificationMills).apply();
+    }
+
+    @Override
+    public void onNotificationPosted(StatusBarNotification sbn) {
+        lastNotificationMills = sbn.getPostTime();
+        saveProperties();
+        handleNotification(sbn);
+    }
+
     @Override
     public void onListenerConnected() {
         super.onListenerConnected();
+        lastNotificationMills = AlopexView.getProperties().getLong(PROPERTY_KEY_LAST_NOTIFICATION_MILLS, 0);
         Log.i(TAG, "onListenerConnected: ");
         active = true;
         Notification notification = new Notification.Builder(this, CHANNEL_ONE_ID)
                 .setAutoCancel(true)
                 .setContentTitle("Listener Connected")
+                .setContentText("at " + AlopexView.getDateTimeString())
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setTimeoutAfter(10000)
                 .build();
         NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
         managerCompat.notify(1000, notification);
-        for (StatusBarNotification sbn : getActiveNotifications()) {
-
+        //startForeground(1, notification);
+        AlopexView.notifyConnect();
+        long maxMills = lastNotificationMills;
+        for (StatusBarNotification activeNotification : getActiveNotifications()) {
+            if (activeNotification.getPostTime() > lastNotificationMills) {
+                handleNotification(activeNotification);
+                maxMills = Math.max(maxMills, activeNotification.getPostTime());
+            }
         }
-    }
-
-    public void rebind() {
-        rebinding = true;
-        PackageManager pm = getPackageManager();
-        pm.setComponentEnabledSetting(new ComponentName(getApplicationContext(), AlopexNotificationListenerService.class),
-                PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
-        Log.i(TAG, "rebind: Disabled");
-        pm.setComponentEnabledSetting(new ComponentName(getApplicationContext(), AlopexNotificationListenerService.class),
-                PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
-        Log.i(TAG, "rebind: Enabled");
-        rebinding = false;
+        lastNotificationMills = maxMills;
+        saveProperties();
     }
 
     @Override
@@ -109,17 +128,15 @@ public class AlopexNotificationListenerService extends NotificationListenerServi
         super.onListenerDisconnected();
         Log.i(TAG, "onListenerDisconnected: ");
         active = false;
-        if (!rebinding) {
-            Notification notification = new Notification.Builder(this, CHANNEL_ONE_ID)
-                    .setAutoCancel(true)
-                    .setContentTitle("Listener Disconnected")
-                    .setContentText("request Rebind now")
-                    .setSmallIcon(R.drawable.ic_launcher_foreground)
-                    .build();
-            NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
-            managerCompat.notify(1001, notification);
-            rebind();
-        }
+        Notification notification = new Notification.Builder(this, CHANNEL_ONE_ID)
+                .setAutoCancel(true)
+                .setContentTitle("Listener Disconnected")
+                .setContentText("at " + AlopexView.getDateTimeString())
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .build();
+        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
+        managerCompat.notify(1000, notification);
+        AlopexView.notifyDisconnect();
     }
 
     public void cancelNotification(StatusBarNotification sbn) {

@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 
-public class FileUtils {
+public class FoxFiles {
     public static String readStream(InputStream inputStream) {
         try {
             InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
@@ -62,6 +62,16 @@ public class FileUtils {
             outputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public static PrintStream getOutputStream(Context context, String fileName) {
+        try {
+            FileOutputStream outputStream = context.openFileOutput(fileName, Context.MODE_APPEND);
+            return new PrintStream(outputStream, true, "UTF-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }

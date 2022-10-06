@@ -6,7 +6,8 @@ import android.content.Context;
 import android.util.Log;
 
 import com.afoxxvi.alopex.component.notify.Notify;
-import com.afoxxvi.alopex.util.FileUtils;
+import com.afoxxvi.alopex.util.FoxFiles;
+import com.afoxxvi.alopex.util.FoxTools;
 import com.afoxxvi.alopex.util.Triplet;
 
 import org.json.JSONArray;
@@ -17,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class AlopexFilterManager {
     private AlopexFilterManager() {
@@ -41,7 +43,7 @@ public class AlopexFilterManager {
                 e.printStackTrace();
             }
         } else {
-            String doc = FileUtils.inputFile(context, "filter.json");
+            String doc = FoxFiles.inputFile(context, "filter.json");
             try {
                 JSONArray array = new JSONArray(doc);
                 for (int i = 0; i < array.length(); i++) {
@@ -53,6 +55,7 @@ public class AlopexFilterManager {
             } catch (JSONException ignored) {
             }
         }
+        FoxTools.getSingleExecutorService().scheduleWithFixedDelay(() -> AlopexFilterManager.getInstance().save(context), 3, 300, TimeUnit.SECONDS);
     }
 
     public void save(Context context) {
@@ -60,7 +63,7 @@ public class AlopexFilterManager {
         for (AlopexFilter filter : filters) {
             array.put(filter.toJsonObject());
         }
-        FileUtils.outputFile(context, "filter.json", array.toString());
+        FoxFiles.outputFile(context, "filter.json", array.toString());
         Log.i(TAG, "filter saved");
     }
 

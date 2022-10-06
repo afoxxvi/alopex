@@ -9,6 +9,7 @@
     </queries>
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:allowBackup="true"
@@ -17,17 +18,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Alopex">
+        <service
+            android:name=".service.LifeService"
+            android:enabled="true"
+            android:exported="true" />
+
         <receiver
             android:name=".listener.RestartReceiver"
             android:enabled="true"
             android:exported="true" />
-
-        <!--service
+        <!--
+service
             android:name=".service.DaemonService"
             android:enabled="true"
             android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE" /-->
-
+            android:permission="android.permission.BIND_JOB_SERVICE" /
+        -->
         <receiver
             android:name=".listener.BootReceiver"
             android:enabled="true"
@@ -42,10 +48,10 @@
         <service
             android:name=".service.AlopexNotificationListenerService"
             android:enabled="true"
-            android:stopWithTask="false"
             android:exported="false"
             android:label="AlopexService"
-            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+            android:stopWithTask="false">
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>

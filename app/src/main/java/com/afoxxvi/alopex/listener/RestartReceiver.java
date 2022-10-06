@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.afoxxvi.alopex.AlopexView;
 import com.afoxxvi.alopex.MainActivity;
+import com.afoxxvi.alopex.service.AlopexNotificationListenerService;
 
 public class RestartReceiver extends BroadcastReceiver {
 
@@ -19,6 +20,9 @@ public class RestartReceiver extends BroadcastReceiver {
             Intent intent1 = new Intent(context, MainActivity.class);
             intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent1);
+        }
+        if (!AlopexNotificationListenerService.active) {
+            context.startService(new Intent(context, AlopexNotificationListenerService.class));
         }
     }
 }
