@@ -4,11 +4,11 @@
 
     <data>
 
-        <import type="com.afoxxvi.alopex.AlopexView" />
+        <import type="com.afoxxvi.alopex.Alopex" />
 
         <variable
             name="alopex"
-            type="AlopexView" />
+            type="Alopex" />
     </data>
 
     <FrameLayout
@@ -99,6 +99,27 @@
                         android:layout_height="wrap_content"
                         android:singleLine="false"
                         android:text='@{alopex.logStrings, default = "[10-01 00:00:00] connect"}' />
+                </LinearLayout>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Errors"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginVertical="8dp"
+                    android:background="@drawable/card_4dp"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerErrors"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

@@ -1,0 +1,72 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.Alopex.AppWidget.Container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:backgroundTint="@color/White"
+    android:theme="@style/Theme.Alopex.AppWidgetContainer">
+
+    <RelativeLayout
+        android:layout_width="356px"
+        android:layout_height="80px">
+
+        <LinearLayout
+            android:id="@+id/l"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/r"
+            android:orientation="vertical"
+            android:paddingHorizontal="20px">
+
+            <TextView
+                android:id="@+id/textDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="一起看星星"
+                android:textSize="25px" />
+
+            <TextView
+                android:id="@+id/textDesc2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="已经"
+                android:textSize="25px" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/r"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/card_16dp"
+            android:backgroundTint="#FF5722"
+            android:orientation="horizontal"
+            android:paddingHorizontal="20px">
+
+            <TextView
+                android:id="@+id/textNum"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="---"
+                android:textColor="@color/White"
+                android:textSize="40px"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textUnit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/textNum"
+                android:text="天"
+                android:textColor="@color/White"
+                android:textSize="24px" />
+        </LinearLayout>
+
+    </RelativeLayout>
+</RelativeLayout>
