@@ -16,10 +16,9 @@ import com.afoxxvi.alopex.databinding.DialogNotifyListBinding
 import com.afoxxvi.alopex.databinding.LiNotificationSummaryBinding
 
 class NotifyListDialog(context: Context?, private val notificationGroup: NotificationGroup) : BaseDialog(context!!, "Notification list") {
-    private val binding: DialogNotifyListBinding
+    private val binding: DialogNotifyListBinding = DialogNotifyListBinding.inflate(LayoutInflater.from(context))
 
     init {
-        binding = DialogNotifyListBinding.inflate(LayoutInflater.from(context))
         setContent(binding.root)
         setBottomVisible(false)
         binding.recyclerNotifyList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -65,11 +64,13 @@ class NotifyListDialog(context: Context?, private val notificationGroup: Notific
                     list.add("Cancel")
                 }
                 holder.binding.textAction.text = list.joinToString(" | ")
-                val tv = TypedValue()
-                context.theme.resolveAttribute(androidx.appcompat.R.attr.colorPrimary, tv, true)
-                holder.binding.textTitle.setTextColor(ColorStateList.valueOf(tv.data))
-                holder.binding.textContent.setTextColor(ColorStateList.valueOf(tv.data))
-                holder.binding.textTime.setTextColor(ColorStateList.valueOf(tv.data))
+                if (result.doNotify) {
+                    val tv = TypedValue()
+                    context.theme.resolveAttribute(androidx.appcompat.R.attr.colorPrimary, tv, true)
+                    holder.binding.textTitle.setTextColor(ColorStateList.valueOf(tv.data))
+                    //holder.binding.textContent.setTextColor(ColorStateList.valueOf(tv.data))
+                    //holder.binding.textTime.setTextColor(ColorStateList.valueOf(tv.data))
+                }
             }
         }
 
