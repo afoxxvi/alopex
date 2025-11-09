@@ -18,6 +18,7 @@ abstract class BaseDialog(protected val context: Context, title: String?) {
         view = baseBinding.root
         baseBinding.textTitle.text = title
         baseBinding.buttonConfirm.setOnClickListener { onConfirm() }
+        baseBinding.buttonMiddle.setOnClickListener { onMiddle() }
         baseBinding.buttonCancel.setOnClickListener { onCancel() }
     }
 
@@ -37,16 +38,30 @@ abstract class BaseDialog(protected val context: Context, title: String?) {
         return this
     }
 
+    fun setMiddleVisible(visible: Boolean): BaseDialog {
+        baseBinding.buttonMiddle.visibility = if (visible) View.VISIBLE else View.GONE
+        return this
+    }
+
+    fun setMiddleText(text: String): BaseDialog {
+        baseBinding.buttonMiddle.text = text
+        return this
+    }
+
     open fun show() {
         dialog = AlertDialog.Builder(context)
-                .setView(view)
-                .create()
+            .setView(view)
+            .create()
         val ad = dialog as AlertDialog?
         ad?.window?.setBackgroundDrawableResource(R.color.Transparent)
         ad?.show()
     }
 
     open fun onConfirm() {
+        dialog?.dismiss()
+    }
+
+    open fun onMiddle() {
         dialog?.dismiss()
     }
 

@@ -16,12 +16,11 @@ import androidx.core.app.NotificationManagerCompat
 import com.afoxxvi.alopex.Alopex
 import com.afoxxvi.alopex.MainActivity
 import com.afoxxvi.alopex.R
-import com.afoxxvi.alopex.component.filter.AlopexFilterManager
-import com.afoxxvi.alopex.component.notify.Notify
-import com.afoxxvi.alopex.component.notify.NotifyManager
+import com.afoxxvi.alopex.component.filter.Filters
+import com.afoxxvi.alopex.component.notify.Notifications
+import com.afoxxvi.alopex.component.notify.WrapperNotification
 import com.afoxxvi.alopex.ui.fragment.NotificationFragment
 import com.afoxxvi.alopex.util.FoxTools
-import com.afoxxvi.alopex.util.Pair
 
 class AlopexNotificationListenerService : NotificationListenerService() {
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
@@ -44,20 +43,20 @@ class AlopexNotificationListenerService : NotificationListenerService() {
         val text = bundle.getString(Notification.EXTRA_TEXT, "")
         if (LATEST_NOTIFICATION_MAP.containsKey(pkg)) {
             val old = LATEST_NOTIFICATION_MAP[pkg]
-            if (old != null && old.a == title && old.b == text) {
+            if (old != null && old.first == title && old.second == text) {
                 return
             }
         }
         LATEST_NOTIFICATION_MAP[pkg] = Pair(title, text)
         Alopex.handlerNotification?.let {
             val msg = Message.obtain(it, NotificationFragment.WHAT_NOTIFICATION_LISTENER_SERVICE)
-            val notify = Notify(title, text, FoxTools.getLocalDateTimeFromMills(System.currentTimeMillis()))
-            val fromIndex = NotifyManager.newNotify(applicationContext, pkg, notify)
+            val wrapperNotification = WrapperNotification(title, text, FoxTools.getLocalDateTimeFromMills(System.currentTimeMillis()))
+            val fromIndex = Notifications.newNotify(applicationContext, pkg, wrapperNotification)
             msg.arg1 = fromIndex
             msg.sendToTarget()
         }
-        val (a, b, _) = AlopexFilterManager.isFiltered(pkg, title, text, true)
-        if (a) {
+        val result = Filters.passNotification(pkg, title, text)
+        if (result.doNotify) {
             val ntf = sbn.notification
             val icon = ntf.smallIcon
             val large = ntf.getLargeIcon()
@@ -71,7 +70,7 @@ class AlopexNotificationListenerService : NotificationListenerService() {
                 .build()
             sendNotification(notification, 1000)
         }
-        if (b) {
+        if (result.doCancel) {
             cancelNotification(sbn.key)
         }
     }

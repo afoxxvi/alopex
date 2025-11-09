@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+option java_package = "com.afoxxvi.alopex.component.filter";
+option java_multiple_files = true;
+
+message FiltersProto{
+  // List<FilterGroup>
+  repeated FilterGroupProto group = 1;
+}
+
+message FilterGroupProto {
+  string appPackage = 1;
+  // List<FilterRule>
+  repeated FilterRuleProto rule = 2;
+}
+
+message FilterRuleProto {
+  string name = 1;
+  // List<Match>
+  repeated MatchProto match = 2;
+  bool notify = 3;
+  bool cancel = 4;
+  bool consume = 5;
+
+  message MatchProto{
+    TypeProto type = 1;
+    string pattern = 2;
+
+    enum TypeProto{
+      TITLE_CONTAIN = 0;
+      TITLE_MATCH = 1;
+      CONTENT_CONTAIN = 2;
+      CONTENT_MATCH = 3;
+    }
+  }
+}

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="com.afoxxvi.alopex.component.filter.FilterGroup" />
+
+        <variable
+            name="filterGroup"
+            type="com.afoxxvi.alopex.component.filter.FilterGroup" />
+    </data>
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="4dp"
+        android:background="@drawable/card_4dp"
+        android:backgroundTint="?attr/colorBackgroundFloating"
+        android:clickable="true"
+        android:columnCount="3"
+        android:foreground="?attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:rowCount="2">
+
+        <TextView
+            android:id="@+id/labelPackage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:layout_gravity="end"
+            android:text="@string/label_filter_group_package"
+            android:textColor="?android:attr/textColorPrimary" />
+
+        <TextView
+            android:id="@+id/labelAction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="1"
+            android:layout_column="0"
+            android:layout_gravity="end"
+            android:text="@string/label_filter_group_rules"
+            android:textColor="?android:attr/textColorPrimary" />
+
+        <View
+            android:layout_width="8dp"
+            android:layout_height="0dp"
+            android:layout_row="0"
+            android:layout_column="1" />
+
+        <TextView
+            android:id="@+id/textPackage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_column="2"
+            android:layout_gravity="start"
+            android:text="@{filterGroup.appPackage, default = package}" />
+
+        <TextView
+            android:id="@+id/textAction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="1"
+            android:layout_column="2"
+            android:layout_gravity="start"
+            android:singleLine="false"
+            android:text="@{filterGroup.rules, default = action}" />
+    </GridLayout>
+</layout>

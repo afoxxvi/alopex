@@ -8,15 +8,15 @@ import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import java.time.LocalDateTime
 
-class NotifyGroup(context: Context, @get:Bindable val packageName: String, val packageId: Int) : BaseObservable() {
+class NotificationGroup(context: Context, @get:Bindable val packageName: String, val packageId: Int) : BaseObservable() {
     private var appName: String? = null
 
     @get:Bindable
     var appIcon: Drawable? = null
-    private val notifyList: MutableList<Notify>
+    private val wrapperNotificationList: MutableList<WrapperNotification>
 
     init {
-        notifyList = ArrayList()
+        wrapperNotificationList = ArrayList()
         val packageManager = context.packageManager
         try {
             val info = packageManager.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES or PackageManager.GET_META_DATA)
@@ -35,48 +35,48 @@ class NotifyGroup(context: Context, @get:Bindable val packageName: String, val p
 
     @get:Bindable
     val latestTitle: String?
-        get() = if (notifyList.isNotEmpty()) {
-            notifyList[0].title
+        get() = if (wrapperNotificationList.isNotEmpty()) {
+            wrapperNotificationList[0].title
         } else "<Empty>"
 
     @get:Bindable
     val latestText: String?
-        get() = if (notifyList.isNotEmpty()) {
-            notifyList[0].text
+        get() = if (wrapperNotificationList.isNotEmpty()) {
+            wrapperNotificationList[0].text
         } else "<No notification recently>"
 
     @get:Bindable
     val latestTimeText: String
-        get() = if (notifyList.isNotEmpty()) {
-            notifyList[0].dateText
+        get() = if (wrapperNotificationList.isNotEmpty()) {
+            wrapperNotificationList[0].dateText
         } else ""
 
     @get:Bindable
     val notifyCount: Int
-        get() = notifyList.size
+        get() = wrapperNotificationList.size
     val latestTime: LocalDateTime
-        get() = if (notifyList.isNotEmpty()) {
-            notifyList[0].time
+        get() = if (wrapperNotificationList.isNotEmpty()) {
+            wrapperNotificationList[0].time
         } else LocalDateTime.MIN
     val earliestNotifyTime: LocalDateTime
-        get() = if (notifyList.isNotEmpty()) {
-            notifyList[notifyList.size - 1].time
+        get() = if (wrapperNotificationList.isNotEmpty()) {
+            wrapperNotificationList[wrapperNotificationList.size - 1].time
         } else LocalDateTime.now()
 
-    private fun checkNotify(notify: Notify) {}
-    fun addNotify(notify: Notify) {
-        notifyList.add(notify)
+    private fun checkNotify(wrapperNotification: WrapperNotification) {}
+    fun addNotify(wrapperNotification: WrapperNotification) {
+        wrapperNotificationList.add(wrapperNotification)
     }
 
-    fun addNotify(index: Int, notify: Notify) {
-        notifyList.add(index, notify)
+    fun addNotify(index: Int, wrapperNotification: WrapperNotification) {
+        wrapperNotificationList.add(index, wrapperNotification)
     }
 
-    fun getNotify(index: Int): Notify {
-        return notifyList[index]
+    fun getNotification(index: Int): WrapperNotification {
+        return wrapperNotificationList[index]
     }
 
     fun limitCount(max: Int) {
-        notifyList.subList(max, notifyCount).clear()
+        wrapperNotificationList.subList(max, notifyCount).clear()
     }
 }

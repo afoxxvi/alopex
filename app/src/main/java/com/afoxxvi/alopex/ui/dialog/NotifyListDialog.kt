@@ -9,13 +9,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.afoxxvi.alopex.R
-import com.afoxxvi.alopex.component.filter.AlopexFilterManager
-import com.afoxxvi.alopex.component.notify.NotifyGroup
-import com.afoxxvi.alopex.component.notify.NotifyManager
+import com.afoxxvi.alopex.component.filter.Filters
+import com.afoxxvi.alopex.component.notify.NotificationGroup
+import com.afoxxvi.alopex.component.notify.Notifications
 import com.afoxxvi.alopex.databinding.DialogNotifyListBinding
 import com.afoxxvi.alopex.databinding.LiNotificationSummaryBinding
 
-class NotifyListDialog(context: Context?, private val notifyGroup: NotifyGroup) : BaseDialog(context!!, "Notification list") {
+class NotifyListDialog(context: Context?, private val notificationGroup: NotificationGroup) : BaseDialog(context!!, "Notification list") {
     private val binding: DialogNotifyListBinding
 
     init {
@@ -25,9 +25,9 @@ class NotifyListDialog(context: Context?, private val notifyGroup: NotifyGroup) 
         binding.recyclerNotifyList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.recyclerNotifyList.adapter = Adapter()
         binding.buttonLoad.setOnClickListener { v: View ->
-            val oldCount = notifyGroup.notifyCount
-            NotifyManager.requestMore(notifyGroup, 10)
-            val newCount = notifyGroup.notifyCount
+            val oldCount = notificationGroup.notifyCount
+            Notifications.requestMore(notificationGroup, 10)
+            val newCount = notificationGroup.notifyCount
             if (oldCount == newCount) {
                 v.visibility = View.GONE
             } else {
@@ -47,8 +47,24 @@ class NotifyListDialog(context: Context?, private val notifyGroup: NotifyGroup) 
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.binding.notify = notifyGroup.getNotify(position)
-            if (AlopexFilterManager.isFiltered(notifyGroup.packageName, notifyGroup.getNotify(position), false).c) {
+            holder.binding.notify = notificationGroup.getNotification(position)
+            val result = Filters.passNotification(
+                notificationGroup.packageName,
+                notificationGroup.getNotification(position).title,
+                notificationGroup.getNotification(position).text,
+            )
+            if (result.doConsume || result.doNotify || result.doCancel) {
+                val list = mutableListOf<String>()
+                if (result.doConsume) {
+                    list.add("Consume")
+                }
+                if (result.doNotify) {
+                    list.add("Notify")
+                }
+                if (result.doCancel) {
+                    list.add("Cancel")
+                }
+                holder.binding.textAction.text = list.joinToString(" | ")
                 val tv = TypedValue()
                 context.theme.resolveAttribute(androidx.appcompat.R.attr.colorPrimary, tv, true)
                 holder.binding.textTitle.setTextColor(ColorStateList.valueOf(tv.data))
@@ -58,7 +74,7 @@ class NotifyListDialog(context: Context?, private val notifyGroup: NotifyGroup) 
         }
 
         override fun getItemCount(): Int {
-            return notifyGroup.notifyCount
+            return notificationGroup.notifyCount
         }
     }
 }

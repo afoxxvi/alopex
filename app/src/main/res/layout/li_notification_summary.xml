@@ -3,7 +3,7 @@
 
     <data>
 
-        <import type="com.afoxxvi.alopex.component.notify.Notify" />
+        <import type="com.afoxxvi.alopex.component.notify.WrapperNotification" />
 
         <import type="androidx.core.content.ContextCompat" />
 
@@ -13,10 +13,10 @@
 
         <variable
             name="notify"
-            type="com.afoxxvi.alopex.component.notify.Notify" />
+            type="com.afoxxvi.alopex.component.notify.WrapperNotification" />
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:foreground="?attr/selectableItemBackground"
@@ -27,6 +27,8 @@
             android:id="@+id/textTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             android:layout_marginVertical="2dp"
             android:text="@{notify.title, default = title}"
             android:textColor="?android:attr/textColorPrimary"
@@ -36,6 +38,8 @@
             android:id="@+id/textContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/textTitle"
+            android:layout_alignStart="@id/textTitle"
             android:layout_marginVertical="2dp"
             android:text="@{notify.text, default = text}" />
 
@@ -43,8 +47,20 @@
             android:id="@+id/textTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/textContent"
+            android:layout_alignStart="@id/textTitle"
             android:layout_marginVertical="2dp"
             android:text="@{notify.dateText, default = time}"
             android:textSize="12sp" />
-    </LinearLayout>
+
+        <TextView
+            android:id="@+id/textAction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginVertical="2dp"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="12sp" />
+    </RelativeLayout>
 </layout>

@@ -16,8 +16,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.afoxxvi.alopex.component.filter.AlopexFilterManager
-import com.afoxxvi.alopex.component.notify.NotifyManager
+import com.afoxxvi.alopex.component.filter.Filters
+import com.afoxxvi.alopex.component.notify.Notifications
 import com.afoxxvi.alopex.databinding.ActivityMainBinding
 import com.afoxxvi.alopex.listener.RestartReceiver
 import com.afoxxvi.alopex.service.AlopexNotificationListenerService
@@ -47,13 +47,23 @@ class MainActivity : AppCompatActivity(), Thread.UncaughtExceptionHandler {
             startService(Intent(this, AlopexNotificationListenerService::class.java))
             startService(Intent(this, LifeService::class.java))
         }
-        AlopexFilterManager.init(this)
-        NotifyManager.init(this)
+        Filters.init(this)
+        Notifications.init(this)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1)
             }
         }
+        createServices()
+        onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                moveTaskToBack(false)
+            }
+        })
+        //Thread.setDefaultUncaughtExceptionHandler(this)
+    }
+
+    private fun createServices() {
         val channel = NotificationChannel(Alopex.CHANNEL_ID, "Alopex Channel 1", NotificationManager.IMPORTANCE_DEFAULT)
         val manager = getSystemService(NotificationManager::class.java)
         manager.createNotificationChannel(channel)
@@ -62,12 +72,6 @@ class MainActivity : AppCompatActivity(), Thread.UncaughtExceptionHandler {
             AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000, 60000,
             PendingIntent.getBroadcast(this, 1, Intent(this, RestartReceiver::class.java), PendingIntent.FLAG_IMMUTABLE)
         )
-        onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                moveTaskToBack(false)
-            }
-        })
-        //Thread.setDefaultUncaughtExceptionHandler(this)
     }
 
     private fun setupUI() {
@@ -93,7 +97,6 @@ class MainActivity : AppCompatActivity(), Thread.UncaughtExceptionHandler {
     }
 
     override fun onDestroy() {
-        AlopexFilterManager.save(this)
         Alopex.active = false
         super.onDestroy()
     }

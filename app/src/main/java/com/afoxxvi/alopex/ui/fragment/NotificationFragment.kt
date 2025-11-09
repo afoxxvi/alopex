@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.afoxxvi.alopex.Alopex
 import com.afoxxvi.alopex.R
-import com.afoxxvi.alopex.component.notify.NotifyManager
+import com.afoxxvi.alopex.component.notify.Notifications
 import com.afoxxvi.alopex.databinding.FragmentNotificationBinding
 import com.afoxxvi.alopex.databinding.LiNotificationInfoBinding
 import com.afoxxvi.alopex.ui.dialog.NotifyListDialog
@@ -83,14 +83,14 @@ class NotificationFragment : Fragment() {
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            val group = NotifyManager.getNotifyGroupList()[position]
+            val group = Notifications.getNotifyGroupList()[position]
             holder.binding.group = group
             holder.itemView.setOnClickListener { v: View -> NotifyListDialog(v.context, group).show() }
             //holder.itemView.setOnLongClickListener { throw Exception("Test") }
         }
 
         override fun getItemCount(): Int {
-            return NotifyManager.getNotifyGroupList().size
+            return Notifications.getNotifyGroupList().size
         }
     }
 

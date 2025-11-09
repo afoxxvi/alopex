@@ -47,6 +47,16 @@
                 android:textAllCaps="false" />
 
             <Button
+                android:id="@+id/buttonMiddle"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:visibility="gone"
+                android:text="Middle"
+                android:textAllCaps="false" />
+
+            <Button
                 android:id="@+id/buttonConfirm"
                 style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="wrap_content"

@@ -4,7 +4,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
-class NotifyStorage(context: Context?, name: String?) : SQLiteOpenHelper(context, name, null, VERSION) {
+class NotificationStorage(context: Context?, name: String?) : SQLiteOpenHelper(context, name, null, VERSION) {
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(CREATE_PACKAGE)
         db.execSQL(CREATE_NOTIFY)

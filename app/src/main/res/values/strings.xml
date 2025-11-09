@@ -5,4 +5,12 @@
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="app_widget_description">This is an app widget description</string>
+
+    <string name="label_filter_group_package">App包名</string>
+    <string name="label_filter_group_rules">过滤规则</string>
+
+    <string name="filter_rule_match_type_title_contain">标题包含</string>
+    <string name="filter_rule_match_type_title_match">标题匹配</string>
+    <string name="filter_rule_match_type_content_contain">内容包含</string>
+    <string name="filter_rule_match_type_content_match">内容匹配</string>
 </resources>

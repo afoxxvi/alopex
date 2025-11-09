@@ -10,7 +10,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class Notify : BaseObservable, Parcelable {
+class WrapperNotification : BaseObservable, Parcelable {
     @get:Bindable
     val title: String?
 
@@ -28,11 +28,11 @@ class Notify : BaseObservable, Parcelable {
         isFiltered = false
     }
 
-    private constructor(`in`: Parcel) {
-        title = `in`.readString()
-        text = `in`.readString()
-        time = LocalDateTime.parse(`in`.readString())
-        isFiltered = `in`.readByte().toInt() != 0
+    private constructor(parcel: Parcel) {
+        title = parcel.readString()
+        text = parcel.readString()
+        time = LocalDateTime.parse(parcel.readString())
+        isFiltered = parcel.readByte().toInt() != 0
     }
 
     @get:Bindable
@@ -65,12 +65,12 @@ class Notify : BaseObservable, Parcelable {
 
     companion object {
         @JvmField
-        val CREATOR: Creator<Notify> = object : Creator<Notify> {
-            override fun createFromParcel(`in`: Parcel): Notify {
-                return Notify(`in`)
+        val CREATOR: Creator<WrapperNotification> = object : Creator<WrapperNotification> {
+            override fun createFromParcel(parcel: Parcel): WrapperNotification {
+                return WrapperNotification(parcel)
             }
 
-            override fun newArray(size: Int): Array<Notify?> {
+            override fun newArray(size: Int): Array<WrapperNotification?> {
                 return arrayOfNulls(size)
             }
         }
