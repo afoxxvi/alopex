@@ -1,7 +1,9 @@
 package com.afoxxvi.alopex.component.filter
 
+import android.util.Log
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
+import com.afoxxvi.alopex.Alopex
 
 class FilterGroup(
     @get:Bindable var appPackage: String,
@@ -30,13 +32,15 @@ class FilterGroup(
 
     fun passNotification(title: String?, content: String?, result: Filters.FilterResult) {
         filterRules.forEach { rule ->
-            if (rule.matches(title, content)) {
-                if (rule.notify) result.doNotify = true
-                if (rule.cancel) result.doCancel = true
-                if (rule.consume) result.doConsume = true
-                if (rule.consume) {
-                    return
-                }
+            if (!rule.matches(title, content)) {
+                Log.i(Alopex.TAG, "Notification did not match rule: ${rule.name}")
+                return@forEach
+            }
+            if (rule.notify) result.doNotify = true
+            if (rule.cancel) result.doCancel = true
+            if (rule.consume) result.doConsume = true
+            if (rule.consume) {
+                return
             }
         }
     }

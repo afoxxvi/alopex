@@ -13,4 +13,8 @@
     <string name="filter_rule_match_type_title_match">标题匹配</string>
     <string name="filter_rule_match_type_content_contain">内容包含</string>
     <string name="filter_rule_match_type_content_match">内容匹配</string>
+
+    <string name="filter_rule_desc_title">标题:</string>
+    <string name="filter_rule_desc_content">内容:</string>
+    <string name="filter_rule_desc_empty">未定义匹配规则</string>
 </resources>

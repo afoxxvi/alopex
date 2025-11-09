@@ -23,14 +23,32 @@
         android:inputType=""
         android:minHeight="48dp" />
 
-    <TextView
-        android:id="@+id/labelRuleList"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="Rule list"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="14sp" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/labelRuleList"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Rule list"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/button_add_rule"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:minHeight="0dp"
+            android:text="+ Add"
+            android:textAllCaps="false" />
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -49,13 +67,4 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <Button
-        android:id="@+id/button_add_rule"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="+ Add New Rule"
-        android:textAllCaps="false"
-        app:cornerRadius="10dp" />
 </LinearLayout>

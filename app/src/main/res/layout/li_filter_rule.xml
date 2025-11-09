@@ -1,30 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:foreground="?attr/selectableItemBackground"
-    android:orientation="vertical"
-    android:padding="8dp">
+    android:foreground="?attr/selectableItemBackground">
 
-    <TextView
-        android:id="@+id/labelRuleName"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/labelRuleName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rule: Name"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/labelRuleDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3 Matches" />
+
+        <TextView
+            android:id="@+id/labelRuleActions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3 Actions"
+            android:textColor="?attr/colorPrimary" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Rule: Name"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/labelRuleMatches"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="3 Matches" />
-
-    <TextView
-        android:id="@+id/labelRuleActions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="3 Actions"
-        android:textColor="?attr/colorPrimary" />
-</LinearLayout>
+        <Button
+            android:id="@+id/buttonMoveUp"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:minHeight="0dp"
+            android:text="↑"
+            android:textAllCaps="false" />
+        <Button
+            android:id="@+id/buttonMoveDown"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:minHeight="0dp"
+            android:text="↓"
+            android:textAllCaps="false" />
+    </LinearLayout>
+</RelativeLayout>

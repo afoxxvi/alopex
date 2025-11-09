@@ -13,24 +13,33 @@ import com.afoxxvi.alopex.R
 import com.afoxxvi.alopex.component.filter.FilterRule
 import com.afoxxvi.alopex.databinding.DialogFilterRuleBinding
 import com.afoxxvi.alopex.databinding.LiFilterRuleMatchBinding
+import com.afoxxvi.alopex.util.entity.MutablePair
+import com.afoxxvi.alopex.util.entity.MutableUnit
+import com.afoxxvi.alopex.util.entity.toMutableUnit
 
 open class FilterRuleDialog(context: Context, title: String?, private val filterRule: FilterRule) : BaseDialog(context, title) {
-    private val binding: DialogFilterRuleBinding
-    private val matchList: MutableList<FilterRule.Match> = filterRule.match.toMutableList()
+    private val binding: DialogFilterRuleBinding = DialogFilterRuleBinding.inflate(LayoutInflater.from(context))
+    private val forTitle: MutableList<FilterRule.Pattern> = filterRule.forTitle.toMutableList()
+    private val forContent: MutableList<FilterRule.Pattern> = filterRule.forContent.toMutableList()
 
     init {
-        binding = DialogFilterRuleBinding.inflate(LayoutInflater.from(context))
         setContent(binding.root)
         setupUI()
         loadProperties()
     }
 
     private fun setupUI() {
-        binding.recyclerMatchList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        binding.recyclerMatchList.adapter = Adapter()
-        binding.buttonAddMatch.setOnClickListener {
-            matchList.add(FilterRule.Match(FilterRule.Match.Type.TITLE_CONTAIN, ""))
-            binding.recyclerMatchList.adapter?.notifyItemInserted(matchList.size - 1)
+        binding.recyclerForTitle.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.recyclerForTitle.adapter = Adapter(forTitle)
+        binding.buttonAddForTitle.setOnClickListener {
+            forTitle.add(FilterRule.Pattern("", false))
+            binding.recyclerForTitle.adapter?.notifyItemInserted(forTitle.size - 1)
+        }
+        binding.recyclerForContent.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.recyclerForContent.adapter = Adapter(forContent)
+        binding.buttonAddForContent.setOnClickListener {
+            forContent.add(FilterRule.Pattern("", false))
+            binding.recyclerForContent.adapter?.notifyItemInserted(forContent.size - 1)
         }
     }
 
@@ -47,37 +56,29 @@ open class FilterRuleDialog(context: Context, title: String?, private val filter
         filterRule.notify = binding.chipNotify.isChecked
         filterRule.cancel = binding.chipCancel.isChecked
         filterRule.consume = binding.chipConsume.isChecked
-        filterRule.match.clear()
-        matchList.removeIf { it.pattern.isEmpty() }
-        filterRule.match.addAll(matchList)
+        filterRule.forTitle = forTitle
+        filterRule.forContent = forContent
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var binding = LiFilterRuleMatchBinding.bind(itemView)
-        lateinit var match: FilterRule.Match
-        var matchTypeIndex: Int = 0
+        var pattern: FilterRule.Pattern = FilterRule.Pattern("", false)
     }
 
-    inner class Adapter : RecyclerView.Adapter<ViewHolder>() {
+    inner class Adapter(private val backendList: MutableList<FilterRule.Pattern>) : RecyclerView.Adapter<ViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.li_filter_rule_match, parent, false))
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.match = matchList[position]
-            val match = holder.match
-            holder.matchTypeIndex = match.type.ordinal
-            holder.binding.chipType.setText(match.type.resId)
-            holder.binding.labelPattern.setText(match.pattern)
-            holder.binding.chipType.isChecked = true
-            holder.binding.chipType.isCheckable = false
-            holder.binding.chipType.setOnClickListener {
-                holder.matchTypeIndex = (holder.matchTypeIndex + 1) % FilterRule.Match.Type.values().size
-                holder.binding.chipType.setText(FilterRule.Match.Type.values()[holder.matchTypeIndex].resId)
-                match.type = FilterRule.Match.Type.values()[holder.matchTypeIndex]
+            holder.pattern = backendList[position]
+            holder.binding.labelPattern.setText(holder.pattern.pattern)
+            holder.binding.chipRegex.isChecked = holder.pattern.isRegex
+            holder.binding.chipRegex.setOnCheckedChangeListener { _, isChecked ->
+                holder.pattern.isRegex = isChecked
             }
             holder.binding.labelPattern.doAfterTextChanged { text: Editable? ->
-                match.pattern = text.toString()
+                holder.pattern.pattern = text.toString()
             }
             binding.root.setOnLongClickListener {
                 // Ask for delete
@@ -85,8 +86,8 @@ open class FilterRuleDialog(context: Context, title: String?, private val filter
                     .setTitle("Confirm")
                     .setMessage("Delete this match?")
                     .setPositiveButton("Delete") { _, _ ->
-                        val index = matchList.indexOf(match)
-                        matchList.removeAt(index)
+                        val index = backendList.indexOf(holder.pattern)
+                        backendList.removeAt(index)
                         notifyItemRemoved(index)
                     }
                     .setNegativeButton("Cancel", null)
@@ -96,7 +97,7 @@ open class FilterRuleDialog(context: Context, title: String?, private val filter
         }
 
         override fun getItemCount(): Int {
-            return matchList.size
+            return backendList.size
         }
     }
 }

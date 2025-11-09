@@ -26,11 +26,20 @@ fun List<FilterGroup>.toProto(): FiltersProto {
 fun FilterGroupProto.toObject(): FilterGroup {
     val filterRules = mutableListOf<FilterRule>()
     for (rule in this.ruleList) {
-        val matchList = mutableListOf<FilterRule.Match>()
-        for (match in rule.matchList) {
-            matchList.add(FilterRule.Match(FilterRule.Match.Type.valueOf(match.type.name), match.pattern))
-        }
-        filterRules.add(FilterRule(rule.name, matchList, rule.notify, rule.cancel, rule.consume))
+        filterRules.add(
+            FilterRule(
+                rule.name,
+                rule.forTitleList.map { pattern ->
+                    FilterRule.Pattern(pattern.pattern, pattern.isRegex)
+                },
+                rule.forContentList.map { pattern ->
+                    FilterRule.Pattern(pattern.pattern, pattern.isRegex)
+                },
+                rule.notify,
+                rule.cancel,
+                rule.consume,
+            )
+        )
     }
     return FilterGroup(this.appPackage, filterRules)
 }
@@ -41,15 +50,17 @@ fun FilterGroup.toProto(): FilterGroupProto {
     for (rule in this.filterRules) {
         val ruleBuilder = FilterRuleProto.newBuilder()
         ruleBuilder.name = rule.name
+        ruleBuilder.clearForTitle()
+        ruleBuilder.addAllForTitle(rule.forTitle.map { pattern ->
+            FilterRuleProto.Pattern.newBuilder().setPattern(pattern.pattern).setIsRegex(pattern.isRegex).build()
+        })
+        ruleBuilder.clearForContent()
+        ruleBuilder.addAllForContent(rule.forContent.map { pattern ->
+            FilterRuleProto.Pattern.newBuilder().setPattern(pattern.pattern).setIsRegex(pattern.isRegex).build()
+        })
         ruleBuilder.notify = rule.notify
         ruleBuilder.cancel = rule.cancel
         ruleBuilder.consume = rule.consume
-        for (match in rule.match) {
-            val matchBuilder = FilterRuleProto.MatchProto.newBuilder()
-            matchBuilder.type = FilterRuleProto.MatchProto.TypeProto.valueOf(match.type.name)
-            matchBuilder.pattern = match.pattern
-            ruleBuilder.addMatch(matchBuilder)
-        }
         builder.addRule(ruleBuilder)
     }
     return builder.build()
@@ -69,7 +80,7 @@ object FiltersSerializer : Serializer<FiltersProto> {
 }
 
 val Context.filtersDataStore: DataStore<FiltersProto>
-    by dataStore(
-        fileName = "filters.pb",
-        serializer = FiltersSerializer,
-    )
+        by dataStore(
+            fileName = "filters.pb",
+            serializer = FiltersSerializer,
+        )

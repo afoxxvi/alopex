@@ -21,6 +21,7 @@ import com.afoxxvi.alopex.component.notify.Notifications
 import com.afoxxvi.alopex.component.notify.WrapperNotification
 import com.afoxxvi.alopex.ui.fragment.NotificationFragment
 import com.afoxxvi.alopex.util.FoxTools
+import androidx.core.content.edit
 
 class AlopexNotificationListenerService : NotificationListenerService() {
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
@@ -76,7 +77,9 @@ class AlopexNotificationListenerService : NotificationListenerService() {
     }
 
     private fun saveProperties() {
-        Alopex.properties!!.edit().putLong(PROPERTY_KEY_LAST_NOTIFICATION_MILLS, lastNotificationMills).apply()
+        Alopex.properties?.edit {
+            putLong(PROPERTY_KEY_LAST_NOTIFICATION_MILLS, lastNotificationMills)
+        }
     }
 
     override fun onNotificationPosted(sbn: StatusBarNotification) {
@@ -88,7 +91,7 @@ class AlopexNotificationListenerService : NotificationListenerService() {
     @SuppressLint("UnspecifiedImmutableFlag")
     override fun onListenerConnected() {
         super.onListenerConnected()
-        lastNotificationMills = Alopex.properties!!.getLong(PROPERTY_KEY_LAST_NOTIFICATION_MILLS, 0)
+        lastNotificationMills = Alopex.properties?.getLong(PROPERTY_KEY_LAST_NOTIFICATION_MILLS, 0) ?: 0
         Log.i(Alopex.TAG, "onListenerConnected: ")
         active = true
         val pendingIntent: PendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {

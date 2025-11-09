@@ -1,5 +1,6 @@
 package com.afoxxvi.alopex.component.filter
 
+import android.content.Context
 import com.afoxxvi.alopex.R
 
 /**
@@ -7,30 +8,59 @@ import com.afoxxvi.alopex.R
  */
 class FilterRule(
     var name: String,
-    val match: MutableList<Match>,
+    var forTitle: List<Pattern>,
+    var forContent: List<Pattern>,
     var notify: Boolean,
     var cancel: Boolean,
     var consume: Boolean,
 ) {
-    fun matches(title: String?, content: String?) = match.any { it.matches(title, content) }
-
-    fun match(title: String?, content: String?): Match? = match.firstOrNull { it.matches(title, content) }
-
-    class Match(var type: Type, var pattern: String) {
-        fun matches(title: String?, content: String?): Boolean {
-            return when (type) {
-                Type.TITLE_CONTAIN -> title != null && title.contains(pattern)
-                Type.TITLE_MATCH -> title != null && title.matches(pattern.toRegex())
-                Type.CONTENT_CONTAIN -> content != null && content.contains(pattern)
-                Type.CONTENT_MATCH -> content != null && content.matches(pattern.toRegex())
+    fun description(context: Context): String {
+        return buildString {
+            if (forTitle.isNotEmpty()) {
+                append(context.getString(R.string.filter_rule_desc_title))
+                append(" ")
+                append(forTitle.joinToString("|") { it.pattern })
+            }
+            if (forContent.isNotEmpty()) {
+                if (isNotEmpty()) {
+                    append("; ")
+                }
+                append(context.getString(R.string.filter_rule_desc_content))
+                append(" ")
+                append(forContent.joinToString("|") { it.pattern })
+            }
+            if (isEmpty()) {
+                append(context.getString(R.string.filter_rule_desc_empty))
             }
         }
+    }
 
-        enum class Type(val resId: Int) {
-            TITLE_CONTAIN(R.string.filter_rule_match_type_title_contain),
-            TITLE_MATCH(R.string.filter_rule_match_type_title_match),
-            CONTENT_CONTAIN(R.string.filter_rule_match_type_content_contain),
-            CONTENT_MATCH(R.string.filter_rule_match_type_content_match),
+    fun matches(title: String?, content: String?): Boolean {
+        if (title == null && forTitle.isNotEmpty()) {
+            return false
+        }
+        if (content == null && forContent.isNotEmpty()) {
+            return false
+        }
+        if (forTitle.isNotEmpty() && forTitle.none { pat -> pat.matches(title!!) }) {
+            return false
+        }
+        if (forContent.isNotEmpty() && forContent.none { pat -> pat.matches(content!!) }) {
+            return false
+        }
+        return true
+    }
+
+    class Pattern(
+        var pattern: String,
+        var isRegex: Boolean,
+    ) {
+        fun matches(text: String): Boolean {
+            return if (isRegex) {
+                text.contains(Regex(pattern))
+            } else {
+                text.contains(pattern)
+            }
         }
     }
 }

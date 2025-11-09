@@ -17,10 +17,18 @@ message FilterGroupProto {
 message FilterRuleProto {
   string name = 1;
   // List<Match>
-  repeated MatchProto match = 2;
+  reserved 2;
   bool notify = 3;
   bool cancel = 4;
   bool consume = 5;
+  reserved 6, 7;
+  repeated Pattern forTitle = 8;
+  repeated Pattern forContent = 9;
+
+  message Pattern {
+    string pattern = 1;
+    bool isRegex = 2;
+  }
 
   message MatchProto{
     TypeProto type = 1;

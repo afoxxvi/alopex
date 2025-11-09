@@ -18,11 +18,10 @@ import com.afoxxvi.alopex.databinding.LiFilterRuleBinding
 import kotlinx.coroutines.runBlocking
 
 open class FilterGroupDialog(context: Context, title: String?, private val filterGroup: FilterGroup) : BaseDialog(context, title) {
-    private val binding: DialogFilterGroupBinding
+    private val binding: DialogFilterGroupBinding = DialogFilterGroupBinding.inflate(LayoutInflater.from(context))
     private val ruleList: MutableList<FilterRule> = filterGroup.filterRules.toMutableList()
 
     init {
-        binding = DialogFilterGroupBinding.inflate(LayoutInflater.from(context))
         setContent(binding.root)
         setupUI()
         loadProperties()
@@ -44,7 +43,7 @@ open class FilterGroupDialog(context: Context, title: String?, private val filte
         }
 
         binding.buttonAddRule.setOnClickListener {
-            val rule = FilterRule("New Filter", mutableListOf(), notify = false, cancel = false, consume = false)
+            val rule = FilterRule("New Filter", mutableListOf(), mutableListOf(), notify = false, cancel = false, consume = false)
             ruleList.add(rule)
             binding.recyclerRuleList.adapter?.notifyItemInserted(ruleList.size - 1)
         }
@@ -85,7 +84,7 @@ open class FilterGroupDialog(context: Context, title: String?, private val filte
             val rule = ruleList[position]
             holder.rule = rule
             holder.binding.labelRuleName.text = "Rule: ${rule.name}"
-            holder.binding.labelRuleMatches.text = "Contains ${rule.match.size} match(es)"
+            holder.binding.labelRuleDescription.text = rule.description(context)
             val action = mutableListOf<String>()
             if (rule.notify) action.add("Notify")
             if (rule.cancel) action.add("Cancel")
@@ -99,6 +98,22 @@ open class FilterGroupDialog(context: Context, title: String?, private val filte
                         notifyItemChanged(ruleList.indexOf(rule))
                     }
                 }.show()
+            }
+            holder.binding.buttonMoveUp.setOnClickListener {
+                val index = ruleList.indexOf(rule)
+                if (index > 0) {
+                    ruleList.removeAt(index)
+                    ruleList.add(index - 1, rule)
+                    notifyItemMoved(index, index - 1)
+                }
+            }
+            holder.binding.buttonMoveDown.setOnClickListener {
+                val index = ruleList.indexOf(rule)
+                if (index < ruleList.size - 1) {
+                    ruleList.removeAt(index)
+                    ruleList.add(index + 1, rule)
+                    notifyItemMoved(index, index + 1)
+                }
             }
             holder.binding.root.setOnLongClickListener {
                 // Ask for delete
